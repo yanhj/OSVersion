@@ -1,7 +1,8 @@
 #include <iostream>
-#include <windows.h>
 #include <string>
 
+#ifdef _WIN32
+#include <windows.h>
 #define _WIN32_WINNT_NT4						0x0400
 #define _WIN32_WINNT_WIN2K						0x0500
 #define _WIN32_WINNT_WINXP						0x0501
@@ -58,9 +59,10 @@ bool IsWow64()
 		return is_wow64 ? true : false;
 #endif // _WIN64
 }
-
+#endif
 std::string GetOSVersionString()
 {
+#ifdef _WIN32
     int nVersion = _WIN32_WINNT_WIN2K;
     DWORD dwMajorVer = 5;
     DWORD dwMinorVer = 0;
@@ -181,6 +183,9 @@ std::string GetOSVersionString()
             .append(std::to_string(dwBuildNumber))
             .append(")");
     return strVersion;
+#else
+    return "unknown";
+#endif
 }
 
 int main() {
